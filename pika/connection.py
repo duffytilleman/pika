@@ -1257,8 +1257,10 @@ class Connection(object):
                                                 method_frame.method.channel_max)
         self.params.frame_max = self._combine(self.params.frame_max,
                                               method_frame.method.frame_max)
-        self.params.heartbeat = self._combine(self.params.heartbeat,
-                                              method_frame.method.heartbeat)
+
+        # Disable _combine of heartbeat to support setting heartbeat to 0
+        # (no heartbeat).  This is important for long running workers on
+        # blocking connections
 
         # Calculate the maximum pieces for body frames
         self._body_max_length = self._get_body_frame_max_length()
